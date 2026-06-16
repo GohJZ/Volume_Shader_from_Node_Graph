@@ -23,8 +23,6 @@ class UnionNode(Node):
         return f"UnionNode(id={self.id})"
     
     # Generate GLSL code for the union of two SDFs and variable name for the result
-    def generate_glsl(self, sdf1_var="sdf1", sdf2_var="sdf2"):
-        result_var = f"sdf_{self.id[:8]}"
-        code = f"float {result_var} = min({sdf1_var}, {sdf2_var});"
-
-        return code, result_var
+    def generate_glsl(self, output_var, sdf1_var="sdf1", sdf2_var="sdf2"):
+        expression = f"min({sdf1_var}, {sdf2_var})"
+        return [], expression

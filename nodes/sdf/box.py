@@ -17,12 +17,12 @@ class BoxNode(Node):
         return f"BoxNode(id={self.id}, size={self.parameters['size']}, position={self.parameters['position']})"
 
     # Generate GLSL code for the box SDF and variable name for the result
-    def generate_glsl(self, p_var="p"):
+    def generate_glsl(self, output_var, p_var="p"):
         size = self.parameters['size']
         position = self.parameters['position']
+        q_var = f"{output_var}_q"
 
-        result_var = f"sdf_{self.id[:8]}"
-        code = f"""vec3 q = abs({p_var} - vec3{position}) - vec3{size};
-float {result_var} = length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);"""
+        temp = [f"vec3 {q_var} = abs({p_var} - vec3{position}) - vec3{size};"]
+        expression = f"length(max({q_var}, 0.0)) + min(max({q_var}.x, max({q_var}.y, {q_var}.z)), 0.0)"
 
-        return code, result_var
+        return temp, expression

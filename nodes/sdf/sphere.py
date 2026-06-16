@@ -17,11 +17,10 @@ class SphereNode(Node):
         return f"SphereNode(id={self.id}, radius={self.parameters['radius']}, position={self.parameters['position']})"
 
     # Generate GLSL code for the sphere SDF and variable name for the result
-    def generate_glsl(self, p_var="p"):
+    def generate_glsl(self, output_var, p_var="p"):
         radius = self.parameters['radius']
         position = self.parameters['position']
 
-        result_var = f"sdf_{self.id[:8]}"
-        code = f"float {result_var} = length({p_var} - vec3{position}) - {radius};"
+        expression = f"length({p_var} - vec3{position}) - {radius}"
         
-        return code, result_var
+        return [], expression
