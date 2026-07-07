@@ -13,7 +13,7 @@ class GLSLGenerator:
         self.var_counter += 1
         return var_name
 
-    def generate_code(self, graph):\
+    def generate_code(self, graph):
         # in the case where multiply graphs use the same generator (if needed)
         #self.var_counter = 0
         #self.node_to_var = {}
