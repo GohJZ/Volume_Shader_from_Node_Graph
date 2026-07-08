@@ -11,7 +11,8 @@ class BlenderImporter:
         self.graph = Graph()
         self.node_map = {} # Maps Blender nodes to IR nodes
         self.node_importers = {
-                "GeometryNodeMeshUVSphere": self.import_sphere
+                "SDF_Sphere": self.import_sphere,
+                "SDF_Union" : self.import_union
             }
         self.socket_map = {} # Maps Blender sockets to IR sockets
 
@@ -54,17 +55,27 @@ class BlenderImporter:
         return self.graph
 
     def create_ir_node(self, blender_node):
-        node_type = blender_node.bl_idname
-
-        if node_type not in self.node_importers:
+        if not hasattr(blender_node, "node_tree"):
             return None
 
-        importer = self.node_importers[node_type]
+        node_name = blender_node.node_tree.name
+
+        importer = self.node_importers.get(node_name)
+
+        if importer is None:
+            return None
 
         return importer(blender_node)
 
     def import_sphere(self, blender_node):
-        sphere_node = SphereNode(radius=blender_node.inputs['Radius'].default_value, position=(0.0, 0.0, 0.0))
-        self.socket_map[blender_node.outputs['Mesh']] = sphere_node.outputs[0]
+        sphere_node = SphereNode(radius=float(blender_node.inputs['Radius'].default_value), position = tuple(blender_node.inputs["Center"].default_value))
+        self.socket_map[blender_node.outputs['Distance']] = sphere_node.outputs[0]
         return sphere_node
+
+    def import_union(self, blender_node):
+        union_node = UnionNode()
+        self.socket_map[blender_node.inputs['A']] = union_node.inputs[0]
+        self.socket_map[blender_node.inputs['B']] = union_node.inputs[1]
+        self.socket_map[blender_node.outputs['Distance']] = union_node.outputs[0]
+        return union_node
 

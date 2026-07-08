@@ -21,6 +21,6 @@ class SphereNode(Node):
         radius = self.parameters['radius']
         position = self.parameters['position']
 
-        expression = f"length({p_var} - vec3{position}) - {radius}"
+        expression = f"length({p_var} - vec3{position}) - {radius:.3f}"
         
         return [], expression
