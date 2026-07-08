@@ -1,5 +1,6 @@
 from structure.node import Node
 from structure.socket import Socket
+from helper import HelperFunctions
 
 class BoxNode(Node):
     """
@@ -22,7 +23,7 @@ class BoxNode(Node):
         position = self.parameters['position']
         q_var = f"{output_var}_q"
 
-        temp = [f"vec3 {q_var} = abs({p_var} - vec3{position}) - vec3{size};"]
+        temp = [f"vec3 {q_var} = abs({p_var} - {HelperFunctions.format_vec3(position)}) - ({HelperFunctions.format_vec3(size)});"]
         expression = f"length(max({q_var}, 0.0)) + min(max({q_var}.x, max({q_var}.y, {q_var}.z)), 0.0)"
 
         return temp, expression

@@ -12,6 +12,7 @@ class BlenderImporter:
         self.node_map = {} # Maps Blender nodes to IR nodes
         self.node_importers = {
                 "SDF_Sphere": self.import_sphere,
+                "SDF_Box" : self.import_box,
                 "SDF_Union" : self.import_union
             }
         self.socket_map = {} # Maps Blender sockets to IR sockets
@@ -71,6 +72,11 @@ class BlenderImporter:
         sphere_node = SphereNode(radius=float(blender_node.inputs['Radius'].default_value), position = tuple(blender_node.inputs["Center"].default_value))
         self.socket_map[blender_node.outputs['Distance']] = sphere_node.outputs[0]
         return sphere_node
+
+    def import_box(self, blender_node):
+        box_node = BoxNode(size=tuple(blender_node.inputs['Size'].default_value), position = tuple(blender_node.inputs["Center"].default_value))
+        self.socket_map[blender_node.outputs['Distance']] = box_node.outputs[0]
+        return box_node
 
     def import_union(self, blender_node):
         union_node = UnionNode()

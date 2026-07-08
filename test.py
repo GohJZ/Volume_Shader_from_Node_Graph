@@ -6,7 +6,7 @@ import glsl_generator
 
 # IR graph test
 sphere = SphereNode(radius=1, position=(-1,0,0))
-box = BoxNode()
+box = BoxNode(size=(0.8,0.6,1), position=(0,0,0))
 union = UnionNode()
 
 # Test graph dependencies
