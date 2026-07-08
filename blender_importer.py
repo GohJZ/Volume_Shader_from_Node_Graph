@@ -1,5 +1,5 @@
 from structure.graph import Graph
-from nodes import SphereNode, BoxNode, UnionNode
+from nodes import SphereNode, BoxNode, UnionNode, IntersectionNode, DifferenceNode
 
 
 class BlenderImporter:
@@ -13,7 +13,9 @@ class BlenderImporter:
         self.node_importers = {
                 "SDF_Sphere": self.import_sphere,
                 "SDF_Box" : self.import_box,
-                "SDF_Union" : self.import_union
+                "SDF_Union" : self.import_union,
+                "SDF_Intersect" : self.import_intersection,
+                "SDF_Subtract" : self.import_difference
             }
         self.socket_map = {} # Maps Blender sockets to IR sockets
 
@@ -85,3 +87,16 @@ class BlenderImporter:
         self.socket_map[blender_node.outputs['Distance']] = union_node.outputs[0]
         return union_node
 
+    def import_intersection(self, blender_node):
+        intersection_node = IntersectionNode()
+        self.socket_map[blender_node.inputs['A']] = intersection_node.inputs[0]
+        self.socket_map[blender_node.inputs['B']] = intersection_node.inputs[1]
+        self.socket_map[blender_node.outputs['Distance']] = intersection_node.outputs[0]
+        return intersection_node
+
+    def import_difference(self, blender_node):
+        difference_node = DifferenceNode()
+        self.socket_map[blender_node.inputs['Base (A)']] = difference_node.inputs[0]
+        self.socket_map[blender_node.inputs['Remove (B)']] = difference_node.inputs[1]
+        self.socket_map[blender_node.outputs['Distance']] = difference_node.outputs[0]
+        return difference_node
