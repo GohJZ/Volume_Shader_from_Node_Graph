@@ -1,0 +1,1955 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" unit="millimeter" xml:lang="en-US" xmlns:m="http://schemas.microsoft.com/3dmanufacturing/material/2015/02" xmlns:p="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" xmlns:b="http://schemas.microsoft.com/3dmanufacturing/beamlattice/2017/02" xmlns:s="http://schemas.microsoft.com/3dmanufacturing/slice/2015/07" xmlns:sc="http://schemas.microsoft.com/3dmanufacturing/securecontent/2019/04" xmlns:v="http://schemas.3mf.io/3dmanufacturing/volumetric/2022/01" xmlns:i="http://schemas.3mf.io/3dmanufacturing/implicit/2023/12" requiredextensions="i">
+	<metadata name="Application" type="string" preserve="1">Gladius</metadata>
+	<resources>
+		<m:colorgroup id="2">
+			<m:color color="#FF8000FF"/>
+		</m:colorgroup>
+		<m:colorgroup id="14">
+			<m:color color="#FF8000FF"/>
+		</m:colorgroup>
+		<m:colorgroup id="15">
+			<m:color color="#FF8000FF"/>
+		</m:colorgroup>
+		<i:implicitfunction id="16" displayname="gyroid">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="wallthickness" displayname="wallthickness"></i:scalar>
+			</i:in>
+			<i:sin identifier="Sine_8" displayname="sin" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:sin>
+			<i:decomposevector identifier="DecomposeVector_5" displayname="decompose pos" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:composevector identifier="ComposeVector_6" displayname="compose yzx" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_5.y"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_5.z"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_5.x"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:cos identifier="Cosine_7" displayname="cos" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_6.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:cos>
+			<i:dot identifier="DotProduct_9" displayname="dot" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Sine_8.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Cosine_7.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:dot>
+			<i:abs identifier="Abs_10" displayname="Abs_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DotProduct_9.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:abs>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_11" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_4" displayname="Multiplication_10" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.wallthickness"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_3.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_11" displayname="Subtraction_9" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Abs_10.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Multiplication_4.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Subtraction_11.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="4" displayname="box">
+			<i:in>
+				<i:vector identifier="b" displayname="b"></i:vector>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:constvec identifier="ConstantVector_12" displayname="ConstantVector_6" tag="" x="0" y="0" z="0">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:constvec identifier="ConstantVector_5" displayname="ConstantVector_14" tag="" x="0.5" y="0.5" z="0.5">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:multiplication identifier="Multiplication_6" displayname="Multiplication_15" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ConstantVector_5.vector"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="inputs.b"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:multiplication>
+			<i:abs identifier="Abs_4" displayname="Abs_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:abs>
+			<i:subtraction identifier="Subtraction_7" displayname="Subtraction_4" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Abs_4.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Multiplication_6.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:max identifier="Max_13" displayname="Max_5" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_7.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ConstantVector_12.vector"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:max>
+			<i:length identifier="Length_14" displayname="Length_10" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Max_13.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:decomposevector identifier="DecomposeVector_8" displayname="DecomposeVector_9" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_7.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:max identifier="Max_9" displayname="Max_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_8.y"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="DecomposeVector_8.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:max>
+			<i:max identifier="Max_10" displayname="Max_11" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_8.x"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Max_9.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:max>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_12" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:min identifier="Min_11" displayname="Min_13" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_3.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Max_10.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:min>
+			<i:addition identifier="Addition_15" displayname="Addition_7" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_14.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Min_11.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:addition>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Addition_15.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="5" displayname="sphere">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="radius" displayname="radius"></i:scalar>
+			</i:in>
+			<i:length identifier="Length_3" displayname="Length_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:subtraction identifier="Subtraction_4" displayname="Subtraction_4" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_3.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Subtraction_4.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="6" displayname="torus">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="radius1" displayname="radius1"></i:scalar>
+				<i:scalar identifier="radius2" displayname="radius2"></i:scalar>
+			</i:in>
+			<i:decomposevector identifier="DecomposeVector_4" displayname="DecomposeVector_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_5" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:composevector identifier="ComposeVector_5" displayname="ComposeVector_4" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_4.x"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_4.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_3.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:length identifier="Length_6" displayname="Length_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_5.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:subtraction identifier="Subtraction_7" displayname="Subtraction_7" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_6.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius1"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:composevector identifier="ComposeVector_8" displayname="ComposeVector_8" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Subtraction_7.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="ConstantScalar_3.value"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_4.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:length identifier="Length_9" displayname="Length_10" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_8.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:subtraction identifier="Subtraction_10" displayname="Subtraction_9" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_9.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius2"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Subtraction_10.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="7" displayname="capsule">
+			<i:in>
+				<i:vector identifier="end" displayname="end"></i:vector>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="radius" displayname="radius"></i:scalar>
+				<i:vector identifier="start" displayname="start"></i:vector>
+			</i:in>
+			<i:subtraction identifier="Subtraction_6" displayname="Subtraction_4_ba" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.end"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="inputs.start"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:dot identifier="DotProduct_8" displayname="DotProduct_5" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_6.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Subtraction_6.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:dot>
+			<i:subtraction identifier="Subtraction_5" displayname="Subtraction_3_pa" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="inputs.start"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:dot identifier="DotProduct_7" displayname="DotProduct_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_5.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Subtraction_6.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:dot>
+			<i:division identifier="Division_9" displayname="Division_7" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DotProduct_7.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="DotProduct_8.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:division>
+			<i:constant identifier="ConstantScalar_4" displayname="ConstantScalar_9" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_10" tag="" value="1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:clamp identifier="Clamp_10" displayname="Clamp_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Division_9.result"></i:scalarref>
+					<i:scalarref identifier="min" displayname="min" ref="ConstantScalar_4.value"></i:scalarref>
+					<i:scalarref identifier="max" displayname="max" ref="ConstantScalar_3.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:clamp>
+			<i:vectorfromscalar identifier="VectorFromScalar_11" displayname="VectorFromScalar_15" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Clamp_10.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:vectorfromscalar>
+			<i:multiplication identifier="Multiplication_12" displayname="Multiplication_12" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_6.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="VectorFromScalar_11.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_13" displayname="Subtraction_13" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_5.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Multiplication_12.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:length identifier="Length_14" displayname="Length_14" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_13.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:subtraction identifier="Subtraction_15" displayname="Subtraction_15" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_14.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Subtraction_15.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="8" displayname="circle">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="radius" displayname="radius"></i:scalar>
+			</i:in>
+			<i:decomposevector identifier="DecomposeVector_4" displayname="DecomposeVector_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_5" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:composevector identifier="ComposeVector_5" displayname="ComposeVector_4" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_4.x"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_4.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_3.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:length identifier="Length_6" displayname="Length_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_5.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:subtraction identifier="Subtraction_7" displayname="Subtraction_7" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_6.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Subtraction_7.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="9" displayname="difference">
+			<i:in>
+				<i:scalar identifier="A" displayname="A"></i:scalar>
+				<i:scalar identifier="B" displayname="B"></i:scalar>
+			</i:in>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_3" tag="" value="-1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_4" displayname="Multiplication_4" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_3.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.B"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:max identifier="Max_5" displayname="Max_5" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_4.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.A"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:max>
+			<i:out>
+				<i:scalarref identifier="result" displayname="result" ref="Max_5.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="10" displayname="union">
+			<i:in>
+				<i:scalar identifier="A" displayname="A"></i:scalar>
+				<i:scalar identifier="B" displayname="B"></i:scalar>
+			</i:in>
+			<i:min identifier="Min_3" displayname="Min_3" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.A"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.B"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:min>
+			<i:out>
+				<i:scalarref identifier="result" displayname="result" ref="Min_3.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="11" displayname="intersection">
+			<i:in>
+				<i:scalar identifier="A" displayname="A"></i:scalar>
+				<i:scalar identifier="B" displayname="B"></i:scalar>
+			</i:in>
+			<i:max identifier="Max_3" displayname="Max_3" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.A"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.B"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:max>
+			<i:out>
+				<i:scalarref identifier="result" displayname="result" ref="Max_3.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="12" displayname="normalize">
+			<i:in>
+				<i:vector identifier="A" displayname="A"></i:vector>
+			</i:in>
+			<i:length identifier="Length_3" displayname="Length_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.A"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:vectorfromscalar identifier="VectorFromScalar_4" displayname="VectorFromScalar_4" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_3.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:vectorfromscalar>
+			<i:division identifier="Division_5" displayname="Division_5" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.A"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="VectorFromScalar_4.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:division>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="Division_5.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="17" displayname="hexagon">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="size" displayname="size"></i:scalar>
+			</i:in>
+			<i:constvec identifier="ConstantVector_22" displayname="ConstantVector_23" tag="" x="2" y="2" z="0">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:constant identifier="ConstantScalar_16" displayname="ky" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_15" displayname="kx" tag="" value="-0.866025">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_10" displayname="Zero" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:composevector identifier="ComposeVector_17" displayname="k_xy" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="ConstantScalar_15.value"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="ConstantScalar_16.value"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_10.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:decomposevector identifier="DecomposeVector_9" displayname="DecomposeVector_29" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:composevector identifier="ComposeVector_11" displayname="ComposeVector_31" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_9.x"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_9.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_10.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:abs identifier="Abs_12" displayname="Abs_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_11.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:abs>
+			<i:decomposevector identifier="DecomposeVector_13" displayname="DecomposeVector_13" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Abs_12.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:composevector identifier="ComposeVector_14" displayname="t1_pos_xy" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_13.x"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_13.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_10.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:dot identifier="DotProduct_18" displayname="DotProduct_19" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_17.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ComposeVector_14.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:dot>
+			<i:min identifier="Min_19" displayname="Min_20" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DotProduct_18.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_10.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:min>
+			<i:vectorfromscalar identifier="VectorFromScalar_20" displayname="VectorFromScalar_21" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Min_19.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:vectorfromscalar>
+			<i:multiplication identifier="Multiplication_21" displayname="Multiplication_22" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="VectorFromScalar_20.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ComposeVector_17.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:multiplication>
+			<i:multiplication identifier="Multiplication_23" displayname="Multiplication_9" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Multiplication_21.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ConstantVector_22.vector"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_24" displayname="Subtraction_7" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Abs_12.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Multiplication_23.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:decomposevector identifier="DecomposeVector_25" displayname="t2_pos" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_24.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:constant identifier="ConstantScalar_7" displayname="kz" tag="" value="0.57735">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_4" displayname="ConstantScalar_33" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_5" displayname="Multiplication_32" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.size"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_4.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:multiplication identifier="Multiplication_8" displayname="Multiplication_28" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_7.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Multiplication_5.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:constant identifier="ConstantScalar_3" displayname="minus_kz" tag="" value="-0.57735">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_6" displayname="Multiplication_27" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_5.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_3.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:clamp identifier="Clamp_26" displayname="Clamp_29" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_25.x"></i:scalarref>
+					<i:scalarref identifier="min" displayname="min" ref="Multiplication_6.result"></i:scalarref>
+					<i:scalarref identifier="max" displayname="max" ref="Multiplication_8.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:clamp>
+			<i:composevector identifier="ComposeVector_27" displayname="ComposeVector_24" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Clamp_26.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="Multiplication_5.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_10.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:subtraction identifier="Subtraction_28" displayname="Subtraction_30" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_24.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ComposeVector_27.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:decomposevector identifier="DecomposeVector_30" displayname="t3_pos" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_28.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:sign identifier="Sign_31" displayname="Sign_34" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_30.y"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:sign>
+			<i:length identifier="Length_29" displayname="Length_33" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Subtraction_28.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:multiplication identifier="Multiplication_32" displayname="Multiplication_35" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Sign_31.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Length_29.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="Multiplication_32.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="18" displayname="finiteRepetition">
+			<i:in>
+				<i:vector identifier="cellsize" displayname="cellsize"></i:vector>
+				<i:vector identifier="number" displayname="number"></i:vector>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:constvec identifier="ConstantVector_7" displayname="ConstantVector_10" tag="" x="0" y="0" z="0">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:constvec identifier="ConstantVector_5" displayname="ConstantVector_7" tag="" x="1" y="1" z="1">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:subtraction identifier="Subtraction_6" displayname="Subtraction_8" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.number"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ConstantVector_5.vector"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:division identifier="Division_3" displayname="Division_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="inputs.cellsize"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:division>
+			<i:round identifier="Round_4" displayname="Round_4_id" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Division_3.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:round>
+			<i:clamp identifier="Clamp_8" displayname="Clamp_9" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Round_4.result"></i:vectorref>
+					<i:vectorref identifier="min" displayname="min" ref="ConstantVector_7.vector"></i:vectorref>
+					<i:vectorref identifier="max" displayname="max" ref="Subtraction_6.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:clamp>
+			<i:multiplication identifier="Multiplication_9" displayname="Multiplication_5" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Clamp_8.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="inputs.cellsize"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_10" displayname="Subtraction_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="Multiplication_9.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:vectorref identifier="id" displayname="id" ref="Round_4.result"></i:vectorref>
+				<i:vectorref identifier="result" displayname="result" ref="Subtraction_10.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="29" displayname="rotationX">
+			<i:in>
+				<i:scalar identifier="angle" displayname="angle"></i:scalar>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:constant identifier="ConstantScalar_9" displayname="ConstantScalar_8" tag="" value="-1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_12" tag="" value="0.0174533">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_4" displayname="Multiplication_11" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.angle"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_3.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:sin identifier="Sine_8" displayname="Sine_3" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_4.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:sin>
+			<i:multiplication identifier="Multiplication_10" displayname="Multiplication_9" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Sine_8.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_9.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:constant identifier="ConstantScalar_7" displayname="ConstantScalar_6" tag="" value="1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_6" displayname="ConstantScalar_5" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:cos identifier="Cosine_5" displayname="Cosine_4" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_4.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:cos>
+			<i:composematrix identifier="ComposeMatrix_11" displayname="ComposeMatrix_7" tag="">
+				<i:in>
+					<i:scalarref identifier="m13" displayname="m13" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m00" displayname="m00" ref="ConstantScalar_7.value"></i:scalarref>
+					<i:scalarref identifier="m12" displayname="m12" ref="Sine_8.result"></i:scalarref>
+					<i:scalarref identifier="m01" displayname="m01" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m11" displayname="m11" ref="Cosine_5.result"></i:scalarref>
+					<i:scalarref identifier="m02" displayname="m02" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m10" displayname="m10" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m03" displayname="m03" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m20" displayname="m20" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m21" displayname="m21" ref="Multiplication_10.result"></i:scalarref>
+					<i:scalarref identifier="m22" displayname="m22" ref="Cosine_5.result"></i:scalarref>
+					<i:scalarref identifier="m23" displayname="m23" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m30" displayname="m30" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m31" displayname="m31" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m32" displayname="m32" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="m33" displayname="m33" ref="ConstantScalar_7.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:matrix identifier="result" displayname="result"></i:matrix>
+					<i:matrix identifier="matrix" displayname="matrix"></i:matrix>
+				</i:out>
+			</i:composematrix>
+			<i:matvecmultiplication identifier="MatrixVectorMultiplication_12" displayname="MatrixVectorMultiplication_10" tag="">
+				<i:in>
+					<i:matrixref identifier="A" displayname="A" ref="ComposeMatrix_11.matrix"></i:matrixref>
+					<i:vectorref identifier="B" displayname="B" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:matvecmultiplication>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="MatrixVectorMultiplication_12.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="31" displayname="symmetryX">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:decomposevector identifier="DecomposeVector_3" displayname="DecomposeVector_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:abs identifier="Abs_4" displayname="Abs_5" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_3.x"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:abs>
+			<i:composevector identifier="ComposeVector_5" displayname="ComposeVector_4" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Abs_4.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_3.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_3.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="ComposeVector_5.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="32" displayname="symmetryY">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:decomposevector identifier="DecomposeVector_3" displayname="DecomposeVector_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:abs identifier="Abs_4" displayname="Abs_6" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_3.y"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:abs>
+			<i:composevector identifier="ComposeVector_5" displayname="ComposeVector_5" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_3.x"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="Abs_4.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_3.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="ComposeVector_5.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="40" displayname="repetitionPolar">
+			<i:in>
+				<i:scalar identifier="number" displayname="number"></i:scalar>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="radius" displayname="radius"></i:scalar>
+			</i:in>
+			<i:decomposevector identifier="DecomposeVector_7" displayname="DecomposeVector_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:atan2 identifier="ArcTan2_8" displayname="ArcTan2_7" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_7.y"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="DecomposeVector_7.x"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:atan2>
+			<i:constant identifier="ConstantScalar_4" displayname="pi2" tag="" value="6.28319">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:division identifier="Division_5" displayname="Division_5" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_4.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.number"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:division>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_10" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_6" displayname="Multiplication_9" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_3.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Division_5.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:addition identifier="Addition_9" displayname="Addition_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_6.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ArcTan2_8.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:addition>
+			<i:mod identifier="Mod_10" displayname="Mod_21" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Addition_9.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Division_5.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:mod>
+			<i:subtraction identifier="Subtraction_11" displayname="Subtraction_20" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Mod_10.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Multiplication_6.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:sin identifier="Sine_18" displayname="Sine_15" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Subtraction_11.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:sin>
+			<i:constant identifier="ConstantScalar_13" displayname="ConstantScalar_13" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:composevector identifier="ComposeVector_14" displayname="ComposeVector_12" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_7.x"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_7.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_13.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:length identifier="Length_15" displayname="Length_11" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="ComposeVector_14.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:multiplication identifier="Multiplication_19" displayname="Multiplication_18" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Sine_18.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Length_15.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:cos identifier="Cosine_12" displayname="Cosine_14" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Subtraction_11.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:cos>
+			<i:multiplication identifier="Multiplication_16" displayname="Multiplication_17" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Cosine_12.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Length_15.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_17" displayname="Subtraction_19" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_16.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:composevector identifier="ComposeVector_20" displayname="ComposeVector_16" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Subtraction_17.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="Multiplication_19.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_7.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="ComposeVector_20.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="47" displayname="mix">
+			<i:in>
+				<i:scalar identifier="A" displayname="A"></i:scalar>
+				<i:scalar identifier="B" displayname="B"></i:scalar>
+				<i:scalar identifier="ratio" displayname="ratio"></i:scalar>
+			</i:in>
+			<i:subtraction identifier="Subtraction_3" displayname="Subtraction_4" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.B"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.A"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:multiplication identifier="Multiplication_4" displayname="Multiplication_5" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Subtraction_3.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.ratio"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:addition identifier="Addition_5" displayname="Addition_3" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.A"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Multiplication_4.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:addition>
+			<i:out>
+				<i:scalarref identifier="result" displayname="result" ref="Addition_5.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<object id="100" name="domain" partnumber="2719ee27-bfa5-4088-ad4f-cb37199dd612" type="model" p:UUID="37b067d1-e4cf-479f-a517-c46bc80f9543" pid="2" pindex="0">
+			<mesh>
+				<vertices>
+					<vertex x="0" y="0" z="0" />
+					<vertex x="400.000000" y="0" z="0" />
+					<vertex x="400.000000" y="400.000000" z="0" />
+					<vertex x="0" y="400.000000" z="0" />
+					<vertex x="0" y="0" z="400.000000" />
+					<vertex x="400.000000" y="0" z="400.000000" />
+					<vertex x="400.000000" y="400.000000" z="400.000000" />
+					<vertex x="0" y="400.000000" z="400.000000" />
+				</vertices>
+				<triangles>
+					<triangle v1="0" v2="1" v3="2" />
+					<triangle v1="0" v2="2" v3="3" />
+					<triangle v1="4" v2="5" v3="6" />
+					<triangle v1="4" v2="6" v3="7" />
+					<triangle v1="0" v2="1" v3="5" />
+					<triangle v1="0" v2="5" v3="4" />
+					<triangle v1="1" v2="2" v3="6" />
+					<triangle v1="1" v2="6" v3="5" />
+					<triangle v1="2" v2="3" v3="7" />
+					<triangle v1="2" v2="7" v3="6" />
+					<triangle v1="3" v2="0" v3="4" />
+					<triangle v1="3" v2="4" v3="7" />
+				</triangles>
+			</mesh>
+		</object>
+		<i:implicitfunction id="3" displayname="main">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:constvec identifier="ConstantVector_6" displayname="ConstantVector_41" tag="" x="10" y="10" z="10">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:constresourceid identifier="Resource_5" displayname="box_functionID" tag="" value="4">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:constvec identifier="ConstantVector_3" displayname="ConstantVector_7" tag="" x="5" y="5" z="5">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:subtraction identifier="Subtraction_4" displayname="Subtraction_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ConstantVector_3.vector"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:functioncall identifier="FunctionCall_7" displayname="box" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_5.value"></i:resourceref>
+					<i:vectorref identifier="b" displayname="b" ref="ConstantVector_6.vector"></i:vectorref>
+					<i:vectorref identifier="pos" displayname="pos" ref="Subtraction_4.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="shape" displayname="shape"></i:scalar>
+				</i:out>
+			</i:functioncall>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="FunctionCall_7.shape"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="13" displayname="toPolarCoordinates">
+			<i:in>
+				<i:vector identifier="A" displayname="A"></i:vector>
+			</i:in>
+			<i:constresourceid identifier="Resource_3" displayname="normalize_functionID" tag="" value="12">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:functioncall identifier="FunctionCall_4" displayname="normalize" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_3.value"></i:resourceref>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.A"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:functioncall>
+			<i:decomposevector identifier="DecomposeVector_5" displayname="DecomposeVector_4" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="FunctionCall_4.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:atan2 identifier="ArcTan2_8" displayname="ArcTan2_6" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_5.x"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="DecomposeVector_5.y"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:atan2>
+			<i:length identifier="Length_7" displayname="Length_8" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.A"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:acos identifier="ArcCos_6" displayname="ArcCos_10" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_5.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:acos>
+			<i:composevector identifier="ComposeVector_9" displayname="ComposeVector_9" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="ArcTan2_8.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="ArcCos_6.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="Length_7.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="ComposeVector_9.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="39" displayname="rotationZ">
+			<i:in>
+				<i:scalar identifier="angle" displayname="angle"></i:scalar>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:constresourceid identifier="Resource_5" displayname="rotX_functionID" tag="" value="29">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:decomposevector identifier="DecomposeVector_3" displayname="DecomposeVector_13" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:composevector identifier="ComposeVector_4" displayname="ComposeVector_14" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_3.z"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_3.x"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_3.y"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:functioncall identifier="FunctionCall_6" displayname="rotX" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_5.value"></i:resourceref>
+					<i:scalarref identifier="angle" displayname="angle" ref="inputs.angle"></i:scalarref>
+					<i:vectorref identifier="pos" displayname="pos" ref="ComposeVector_4.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:functioncall>
+			<i:decomposevector identifier="DecomposeVector_7" displayname="DecomposeVector_7" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="FunctionCall_6.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:composevector identifier="ComposeVector_8" displayname="ComposeVector_8" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="DecomposeVector_7.z"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="DecomposeVector_7.y"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_7.x"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="ComposeVector_8.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="46" displayname="toCylindricalCoordinates">
+			<i:in>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+			</i:in>
+			<i:constresourceid identifier="Resource_4" displayname="normalize_functionID" tag="" value="12">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:functioncall identifier="FunctionCall_5" displayname="normalize" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_4.value"></i:resourceref>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:functioncall>
+			<i:decomposevector identifier="DecomposeVector_6" displayname="DecomposeVector_4" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="FunctionCall_5.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="x" displayname="x"></i:scalar>
+					<i:scalar identifier="y" displayname="y"></i:scalar>
+					<i:scalar identifier="z" displayname="z"></i:scalar>
+				</i:out>
+			</i:decomposevector>
+			<i:atan2 identifier="ArcTan2_7" displayname="ArcTan2_5" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="DecomposeVector_6.x"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="DecomposeVector_6.y"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:atan2>
+			<i:sin identifier="Sine_10" displayname="Sine_10" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ArcTan2_7.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:sin>
+			<i:cos identifier="Cosine_8" displayname="Cosine_9" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ArcTan2_7.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:cos>
+			<i:length identifier="Length_3" displayname="Length_3" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:length>
+			<i:multiplication identifier="Multiplication_9" displayname="Multiplication_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Length_3.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Cosine_8.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:composevector identifier="ComposeVector_11" displayname="ComposeVector_7" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Multiplication_9.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="Sine_10.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="DecomposeVector_6.z"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:out>
+				<i:vectorref identifier="result" displayname="result" ref="ComposeVector_11.result"></i:vectorref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="48" displayname="smoothUnion">
+			<i:in>
+				<i:scalar identifier="A" displayname="A"></i:scalar>
+				<i:scalar identifier="B" displayname="B"></i:scalar>
+				<i:scalar identifier="radius" displayname="radius"></i:scalar>
+			</i:in>
+			<i:constresourceid identifier="Resource_15" displayname="mix_functionID" tag="" value="47">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:subtraction identifier="Subtraction_7" displayname="Subtraction_21" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.B"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.A"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:division identifier="Division_8" displayname="Division_4" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Subtraction_7.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:division>
+			<i:constant identifier="ConstantScalar_6" displayname="ConstantScalar_6" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_9" displayname="Multiplication_5" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Division_8.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_6.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_10" displayname="Subtraction_7" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_6.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Multiplication_9.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:constant identifier="ConstantScalar_5" displayname="ConstantScalar_9" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_4" displayname="ConstantScalar_10" tag="" value="1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:clamp identifier="Clamp_11" displayname="Clamp_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Subtraction_10.result"></i:scalarref>
+					<i:scalarref identifier="min" displayname="min" ref="ConstantScalar_5.value"></i:scalarref>
+					<i:scalarref identifier="max" displayname="max" ref="ConstantScalar_4.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:clamp>
+			<i:functioncall identifier="FunctionCall_16" displayname="mix" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_15.value"></i:resourceref>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.A"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.B"></i:scalarref>
+					<i:scalarref identifier="ratio" displayname="ratio" ref="Clamp_11.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:functioncall>
+			<i:multiplication identifier="Multiplication_13" displayname="Multiplication_17" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Clamp_11.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.radius"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:constant identifier="ConstantScalar_3" displayname="ConstantScalar_20" tag="" value="1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:subtraction identifier="Subtraction_12" displayname="Subtraction_19" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="ConstantScalar_3.value"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Clamp_11.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:multiplication identifier="Multiplication_14" displayname="Multiplication_18" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_13.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Subtraction_12.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:subtraction identifier="Subtraction_17" displayname="Subtraction_16" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="FunctionCall_16.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="Multiplication_14.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:out>
+				<i:scalarref identifier="result" displayname="result" ref="Subtraction_17.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="28" displayname="hexagoncolumns">
+			<i:in>
+				<i:scalar identifier="diagonal" displayname="diagonal"></i:scalar>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="wallthickness" displayname="wallthickness"></i:scalar>
+			</i:in>
+			<i:subtraction identifier="Subtraction_16" displayname="Subtraction_19" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="inputs.wallthickness"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:subtraction>
+			<i:constant identifier="ConstantScalar_11" displayname="ConstantScalar_16" tag="" value="3">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_6" displayname="onedivsqrt3" tag="" value="0.57735">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_10" displayname="Multiplication_18" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_6.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:multiplication identifier="Multiplication_12" displayname="Multiplication_17" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Multiplication_10.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_11.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:constant identifier="ConstantScalar_8" displayname="ConstantScalar_11" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:composevector identifier="ComposeVector_13" displayname="ComposeVector_10" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Multiplication_12.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_8.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:mod identifier="Mod_14" displayname="Mod_9" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ComposeVector_13.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:mod>
+			<i:multiplication identifier="Multiplication_7" displayname="Multiplication_13" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_6.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:constant identifier="ConstantScalar_4" displayname="ConstantScalar_15" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_5" displayname="Multiplication_14" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_4.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:composevector identifier="ComposeVector_9" displayname="ComposeVector_12" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Multiplication_7.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="Multiplication_5.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_8.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:subtraction identifier="Subtraction_15" displayname="Subtraction_7" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="Mod_14.result"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ComposeVector_9.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:constresourceid identifier="Resource_3" displayname="hexagon_functionID" tag="" value="17">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:functioncall identifier="FunctionCall_17" displayname="hexagon" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_3.value"></i:resourceref>
+					<i:vectorref identifier="pos" displayname="pos" ref="Subtraction_15.result"></i:vectorref>
+					<i:scalarref identifier="size" displayname="size" ref="Subtraction_16.result"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="shape" displayname="shape"></i:scalar>
+				</i:out>
+			</i:functioncall>
+			<i:constvec identifier="ConstantVector_18" displayname="ConstantVector_8" tag="" x="15" y="15" z="0">
+				<i:out>
+					<i:vector identifier="vector" displayname="vector"></i:vector>
+				</i:out>
+			</i:constvec>
+			<i:out>
+				<i:scalarref identifier="shape" displayname="shape" ref="FunctionCall_17.shape"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<i:implicitfunction id="1" displayname="honeycomb">
+			<i:in>
+				<i:scalar identifier="diagonal" displayname="diagonal"></i:scalar>
+				<i:vector identifier="pos" displayname="pos"></i:vector>
+				<i:scalar identifier="wallthickness" displayname="wallthickness"></i:scalar>
+			</i:in>
+			<i:constant identifier="ConstantScalar_15" displayname="ConstantScalar_17" tag="" value="-1">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_9" displayname="half_sqrt_3" tag="" value="0.866025">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_10" displayname="Multiplication_14" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_9.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:constant identifier="ConstantScalar_8" displayname="ConstantScalar_13" tag="" value="0">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:constant identifier="ConstantScalar_6" displayname="ConstantScalar_11" tag="" value="0.5">
+				<i:out>
+					<i:scalar identifier="value" displayname="value"></i:scalar>
+				</i:out>
+			</i:constant>
+			<i:multiplication identifier="Multiplication_7" displayname="Multiplication_12" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="inputs.diagonal"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_6.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:composevector identifier="ComposeVector_11" displayname="ComposeVector_9" tag="">
+				<i:in>
+					<i:scalarref identifier="x" displayname="x" ref="Multiplication_10.result"></i:scalarref>
+					<i:scalarref identifier="y" displayname="y" ref="Multiplication_7.result"></i:scalarref>
+					<i:scalarref identifier="z" displayname="z" ref="ConstantScalar_8.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:composevector>
+			<i:subtraction identifier="Subtraction_12" displayname="Subtraction_6" tag="">
+				<i:in>
+					<i:vectorref identifier="A" displayname="A" ref="inputs.pos"></i:vectorref>
+					<i:vectorref identifier="B" displayname="B" ref="ComposeVector_11.result"></i:vectorref>
+				</i:in>
+				<i:out>
+					<i:vector identifier="result" displayname="result"></i:vector>
+				</i:out>
+			</i:subtraction>
+			<i:constresourceid identifier="Resource_5" displayname="honeycomb_functionID" tag="" value="28">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:functioncall identifier="FunctionCall_13" displayname="hexagoncolumns" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_5.value"></i:resourceref>
+					<i:scalarref identifier="diagonal" displayname="diagonal" ref="inputs.diagonal"></i:scalarref>
+					<i:vectorref identifier="pos" displayname="pos" ref="Subtraction_12.result"></i:vectorref>
+					<i:scalarref identifier="wallthickness" displayname="wallthickness" ref="inputs.wallthickness"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="shape" displayname="shape"></i:scalar>
+				</i:out>
+			</i:functioncall>
+			<i:constresourceid identifier="Resource_3" displayname="honeycomb_functionID" tag="" value="28">
+				<i:out>
+					<i:resourceid identifier="value" displayname="value"></i:resourceid>
+				</i:out>
+			</i:constresourceid>
+			<i:functioncall identifier="FunctionCall_4" displayname="hexagoncolumns" tag="">
+				<i:in>
+					<i:resourceref identifier="functionID" displayname="functionID" ref="Resource_3.value"></i:resourceref>
+					<i:scalarref identifier="diagonal" displayname="diagonal" ref="inputs.diagonal"></i:scalarref>
+					<i:vectorref identifier="pos" displayname="pos" ref="inputs.pos"></i:vectorref>
+					<i:scalarref identifier="wallthickness" displayname="wallthickness" ref="inputs.wallthickness"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="shape" displayname="shape"></i:scalar>
+				</i:out>
+			</i:functioncall>
+			<i:min identifier="Min_14" displayname="Min_8" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="FunctionCall_4.shape"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="FunctionCall_13.shape"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:min>
+			<i:multiplication identifier="Multiplication_16" displayname="Multiplication_16" tag="">
+				<i:in>
+					<i:scalarref identifier="A" displayname="A" ref="Min_14.result"></i:scalarref>
+					<i:scalarref identifier="B" displayname="B" ref="ConstantScalar_15.value"></i:scalarref>
+				</i:in>
+				<i:out>
+					<i:scalar identifier="result" displayname="result"></i:scalar>
+				</i:out>
+			</i:multiplication>
+			<i:out>
+				<i:scalarref identifier="inverted" displayname="inverted" ref="Min_14.result"></i:scalarref>
+				<i:scalarref identifier="shape" displayname="shape" ref="Multiplication_16.result"></i:scalarref>
+			</i:out>
+		</i:implicitfunction>
+		<object id="101" type="model" p:UUID="c3520c08-c542-4151-b447-d3a1af258b8b">
+			<v:levelset functionid="3" meshid="100" channel="shape" meshbboxonly="true"></v:levelset>
+		</object>
+	</resources>
+	<build p:UUID="4acf1cba-a5d5-458b-acfa-f19f2b9235ee">
+		<item objectid="101" partnumber="buzzingbee" p:UUID="74941f5f-2489-46c0-9b6c-82778d38a1fe"/>
+	</build>
+</model>

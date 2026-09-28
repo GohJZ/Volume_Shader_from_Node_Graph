@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8'?>
+<model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:i="http://schemas.3mf.io/3dmanufacturing/implicit/2023/12" xmlns:v="http://schemas.3mf.io/3dmanufacturing/volumetric/2022/01" unit="millimeter" xml:lang="en-US" requiredextensions="v i">
+  <metadata name="Application">Volume Shader from Node Graph examples</metadata>
+  <resources>
+    <i:implicitfunction id="1" displayname="main">
+      <i:in>
+        <i:vector identifier="pos" displayname="pos" />
+      </i:in>
+      <i:constvec identifier="base_center" displayname="base_center" x="-5" y="0" z="0">
+        <i:out>
+          <i:vector identifier="vector" displayname="vector" />
+        </i:out>
+      </i:constvec>
+      <i:subtraction identifier="base_local" displayname="base_local">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="inputs.pos" />
+          <i:vectorref identifier="B" displayname="B" ref="base_center.vector" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:length identifier="base_length" displayname="base_length">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="base_local.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:length>
+      <i:constant identifier="base_radius" displayname="base_radius" value="22">
+        <i:out>
+          <i:scalar identifier="value" displayname="value" />
+        </i:out>
+      </i:constant>
+      <i:subtraction identifier="base_distance" displayname="base_distance">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="base_length.result" />
+          <i:scalarref identifier="B" displayname="B" ref="base_radius.value" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:constvec identifier="cutter_center" displayname="cutter_center" x="10" y="0" z="0">
+        <i:out>
+          <i:vector identifier="vector" displayname="vector" />
+        </i:out>
+      </i:constvec>
+      <i:subtraction identifier="cutter_local" displayname="cutter_local">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="inputs.pos" />
+          <i:vectorref identifier="B" displayname="B" ref="cutter_center.vector" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:length identifier="cutter_length" displayname="cutter_length">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="cutter_local.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:length>
+      <i:constant identifier="cutter_radius" displayname="cutter_radius" value="18">
+        <i:out>
+          <i:scalar identifier="value" displayname="value" />
+        </i:out>
+      </i:constant>
+      <i:subtraction identifier="cutter_distance" displayname="cutter_distance">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="cutter_length.result" />
+          <i:scalarref identifier="B" displayname="B" ref="cutter_radius.value" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:constant identifier="sphere_difference_negative_one" displayname="sphere_difference_negative_one" value="-1">
+        <i:out>
+          <i:scalar identifier="value" displayname="value" />
+        </i:out>
+      </i:constant>
+      <i:multiplication identifier="sphere_difference_negative_b" displayname="sphere_difference_negative_b">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="cutter_distance.result" />
+          <i:scalarref identifier="B" displayname="B" ref="sphere_difference_negative_one.value" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:multiplication>
+      <i:max identifier="sphere_difference_result" displayname="sphere_difference_result">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="base_distance.result" />
+          <i:scalarref identifier="B" displayname="B" ref="sphere_difference_negative_b.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:max>
+      <i:out>
+        <i:scalarref identifier="shape" displayname="shape" ref="sphere_difference_result.result" />
+      </i:out>
+    </i:implicitfunction>
+    <object id="2" name="Evaluation domain" type="model">
+      <mesh>
+        <vertices>
+          <vertex x="-33" y="-29" z="-29" />
+          <vertex x="33" y="-29" z="-29" />
+          <vertex x="33" y="29" z="-29" />
+          <vertex x="-33" y="29" z="-29" />
+          <vertex x="-33" y="-29" z="29" />
+          <vertex x="33" y="-29" z="29" />
+          <vertex x="33" y="29" z="29" />
+          <vertex x="-33" y="29" z="29" />
+        </vertices>
+        <triangles>
+          <triangle v1="0" v2="2" v3="1" />
+          <triangle v1="0" v2="3" v3="2" />
+          <triangle v1="4" v2="5" v3="6" />
+          <triangle v1="4" v2="6" v3="7" />
+          <triangle v1="0" v2="1" v3="5" />
+          <triangle v1="0" v2="5" v3="4" />
+          <triangle v1="2" v2="3" v3="7" />
+          <triangle v1="2" v2="7" v3="6" />
+          <triangle v1="1" v2="2" v3="6" />
+          <triangle v1="1" v2="6" v3="5" />
+          <triangle v1="0" v2="4" v3="7" />
+          <triangle v1="0" v2="7" v3="3" />
+        </triangles>
+      </mesh>
+    </object>
+    <object id="3" name="Sphere minus sphere" type="model">
+      <v:levelset functionid="1" meshid="2" channel="shape" meshbboxonly="true" />
+    </object>
+  </resources>
+  <build>
+    <item objectid="3" />
+  </build>
+</model>

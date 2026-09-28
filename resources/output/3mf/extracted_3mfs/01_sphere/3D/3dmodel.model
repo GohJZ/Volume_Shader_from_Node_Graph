@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:i="http://schemas.3mf.io/3dmanufacturing/implicit/2023/12" xmlns:v="http://schemas.3mf.io/3dmanufacturing/volumetric/2022/01" unit="millimeter" xml:lang="en-US" requiredextensions="v i">
+  <metadata name="Application">Volume Shader from Node Graph examples</metadata>
+  <resources>
+    <i:implicitfunction id="1" displayname="main">
+      <i:in>
+        <i:vector identifier="pos" displayname="pos" />
+      </i:in>
+      <i:length identifier="sphere_length" displayname="sphere_length">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="inputs.pos" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:length>
+      <i:constant identifier="sphere_radius" displayname="sphere_radius" value="20">
+        <i:out>
+          <i:scalar identifier="value" displayname="value" />
+        </i:out>
+      </i:constant>
+      <i:subtraction identifier="sphere_distance" displayname="sphere_distance">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="sphere_length.result" />
+          <i:scalarref identifier="B" displayname="B" ref="sphere_radius.value" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:out>
+        <i:scalarref identifier="shape" displayname="shape" ref="sphere_distance.result" />
+      </i:out>
+    </i:implicitfunction>
+    <object id="2" name="Evaluation domain" type="model">
+      <mesh>
+        <vertices>
+          <vertex x="-26" y="-26" z="-26" />
+          <vertex x="26" y="-26" z="-26" />
+          <vertex x="26" y="26" z="-26" />
+          <vertex x="-26" y="26" z="-26" />
+          <vertex x="-26" y="-26" z="26" />
+          <vertex x="26" y="-26" z="26" />
+          <vertex x="26" y="26" z="26" />
+          <vertex x="-26" y="26" z="26" />
+        </vertices>
+        <triangles>
+          <triangle v1="0" v2="2" v3="1" />
+          <triangle v1="0" v2="3" v3="2" />
+          <triangle v1="4" v2="5" v3="6" />
+          <triangle v1="4" v2="6" v3="7" />
+          <triangle v1="0" v2="1" v3="5" />
+          <triangle v1="0" v2="5" v3="4" />
+          <triangle v1="2" v2="3" v3="7" />
+          <triangle v1="2" v2="7" v3="6" />
+          <triangle v1="1" v2="2" v3="6" />
+          <triangle v1="1" v2="6" v3="5" />
+          <triangle v1="0" v2="4" v3="7" />
+          <triangle v1="0" v2="7" v3="3" />
+        </triangles>
+      </mesh>
+    </object>
+    <object id="3" name="Sphere" type="model">
+      <v:levelset functionid="1" meshid="2" channel="shape" meshbboxonly="true" />
+    </object>
+  </resources>
+  <build>
+    <item objectid="3" />
+  </build>
+</model>

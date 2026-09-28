@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='utf-8'?>
+<model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:i="http://schemas.3mf.io/3dmanufacturing/implicit/2023/12" xmlns:v="http://schemas.3mf.io/3dmanufacturing/volumetric/2022/01" unit="millimeter" xml:lang="en-US" requiredextensions="v i">
+  <metadata name="Application">Volume Shader from Node Graph examples</metadata>
+  <resources>
+    <i:implicitfunction id="1" displayname="main">
+      <i:in>
+        <i:vector identifier="pos" displayname="pos" />
+      </i:in>
+      <i:constvec identifier="box_center" displayname="box_center" x="-7" y="0" z="0">
+        <i:out>
+          <i:vector identifier="vector" displayname="vector" />
+        </i:out>
+      </i:constvec>
+      <i:subtraction identifier="box_local" displayname="box_local">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="inputs.pos" />
+          <i:vectorref identifier="B" displayname="B" ref="box_center.vector" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:abs identifier="box_abs" displayname="box_abs">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="box_local.result" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:abs>
+      <i:constvec identifier="box_half_size" displayname="box_half_size" x="16" y="14" z="13">
+        <i:out>
+          <i:vector identifier="vector" displayname="vector" />
+        </i:out>
+      </i:constvec>
+      <i:subtraction identifier="box_q" displayname="box_q">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="box_abs.result" />
+          <i:vectorref identifier="B" displayname="B" ref="box_half_size.vector" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:constvec identifier="box_zero_vector" displayname="box_zero_vector" x="0" y="0" z="0">
+        <i:out>
+          <i:vector identifier="vector" displayname="vector" />
+        </i:out>
+      </i:constvec>
+      <i:max identifier="box_outside_vector" displayname="box_outside_vector">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="box_q.result" />
+          <i:vectorref identifier="B" displayname="B" ref="box_zero_vector.vector" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:max>
+      <i:length identifier="box_outside" displayname="box_outside">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="box_outside_vector.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:length>
+      <i:decomposevector identifier="box_components" displayname="box_components">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="box_q.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="x" displayname="x" />
+          <i:scalar identifier="y" displayname="y" />
+          <i:scalar identifier="z" displayname="z" />
+        </i:out>
+      </i:decomposevector>
+      <i:max identifier="box_max_yz" displayname="box_max_yz">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="box_components.y" />
+          <i:scalarref identifier="B" displayname="B" ref="box_components.z" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:max>
+      <i:max identifier="box_max_xyz" displayname="box_max_xyz">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="box_components.x" />
+          <i:scalarref identifier="B" displayname="B" ref="box_max_yz.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:max>
+      <i:constant identifier="box_zero" displayname="box_zero" value="0">
+        <i:out>
+          <i:scalar identifier="value" displayname="value" />
+        </i:out>
+      </i:constant>
+      <i:min identifier="box_inside" displayname="box_inside">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="box_max_xyz.result" />
+          <i:scalarref identifier="B" displayname="B" ref="box_zero.value" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:min>
+      <i:addition identifier="box_distance" displayname="box_distance">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="box_outside.result" />
+          <i:scalarref identifier="B" displayname="B" ref="box_inside.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:addition>
+      <i:constvec identifier="sphere_center" displayname="sphere_center" x="12" y="0" z="0">
+        <i:out>
+          <i:vector identifier="vector" displayname="vector" />
+        </i:out>
+      </i:constvec>
+      <i:subtraction identifier="sphere_local" displayname="sphere_local">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="inputs.pos" />
+          <i:vectorref identifier="B" displayname="B" ref="sphere_center.vector" />
+        </i:in>
+        <i:out>
+          <i:vector identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:length identifier="sphere_length" displayname="sphere_length">
+        <i:in>
+          <i:vectorref identifier="A" displayname="A" ref="sphere_local.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:length>
+      <i:constant identifier="sphere_radius" displayname="sphere_radius" value="17">
+        <i:out>
+          <i:scalar identifier="value" displayname="value" />
+        </i:out>
+      </i:constant>
+      <i:subtraction identifier="sphere_distance" displayname="sphere_distance">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="sphere_length.result" />
+          <i:scalarref identifier="B" displayname="B" ref="sphere_radius.value" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:subtraction>
+      <i:max identifier="box_sphere_intersection" displayname="box_sphere_intersection">
+        <i:in>
+          <i:scalarref identifier="A" displayname="A" ref="box_distance.result" />
+          <i:scalarref identifier="B" displayname="B" ref="sphere_distance.result" />
+        </i:in>
+        <i:out>
+          <i:scalar identifier="result" displayname="result" />
+        </i:out>
+      </i:max>
+      <i:out>
+        <i:scalarref identifier="shape" displayname="shape" ref="box_sphere_intersection.result" />
+      </i:out>
+    </i:implicitfunction>
+    <object id="2" name="Evaluation domain" type="model">
+      <mesh>
+        <vertices>
+          <vertex x="-28" y="-23" z="-22" />
+          <vertex x="28" y="-23" z="-22" />
+          <vertex x="28" y="23" z="-22" />
+          <vertex x="-28" y="23" z="-22" />
+          <vertex x="-28" y="-23" z="22" />
+          <vertex x="28" y="-23" z="22" />
+          <vertex x="28" y="23" z="22" />
+          <vertex x="-28" y="23" z="22" />
+        </vertices>
+        <triangles>
+          <triangle v1="0" v2="2" v3="1" />
+          <triangle v1="0" v2="3" v3="2" />
+          <triangle v1="4" v2="5" v3="6" />
+          <triangle v1="4" v2="6" v3="7" />
+          <triangle v1="0" v2="1" v3="5" />
+          <triangle v1="0" v2="5" v3="4" />
+          <triangle v1="2" v2="3" v3="7" />
+          <triangle v1="2" v2="7" v3="6" />
+          <triangle v1="1" v2="2" v3="6" />
+          <triangle v1="1" v2="6" v3="5" />
+          <triangle v1="0" v2="4" v3="7" />
+          <triangle v1="0" v2="7" v3="3" />
+        </triangles>
+      </mesh>
+    </object>
+    <object id="3" name="Intersection of box and sphere" type="model">
+      <v:levelset functionid="1" meshid="2" channel="shape" meshbboxonly="true" />
+    </object>
+  </resources>
+  <build>
+    <item objectid="3" />
+  </build>
+</model>
