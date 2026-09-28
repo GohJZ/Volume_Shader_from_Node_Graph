@@ -1,0 +1,47 @@
+import sys
+import os
+import bpy
+
+os.system("cls")
+
+project_path = r"[YOUR_PROJECT_PATH]\Volume_Shader_from_Node_Graph"
+
+
+
+if project_path not in sys.path:
+    sys.path.append(project_path)
+
+from blender import BlenderImporter
+from glsl_generator import GLSLGenerator
+from structure.import_context import ImportContext
+
+def get_geometry_nodes_editor():
+    for area in bpy.context.screen.areas:
+        if area.type == 'NODE_EDITOR':
+            space = area.spaces.active
+
+            if space.tree_type == 'GeometryNodeTree':
+                return space
+
+    raise RuntimeError("No Geometry Nodes editor found.")
+
+
+space = get_geometry_nodes_editor()
+node_tree = space.edit_tree
+
+importer = BlenderImporter()
+context = importer.import_node_tree(node_tree, output_name="Distance")
+output_socket = context.named_outputs["Distance"]
+
+generator = GLSLGenerator()
+generated_glsl = generator.generate_function(context.graph, output_socket, function_name="sdf")
+
+
+praktikum_dir = os.path.dirname(project_path)
+output_filepath = os.path.join(praktikum_dir, r"[YOUR_PROJECT_PATH]\Volume_Shader_from_Node_Graph\shadertoy_app\shaders\sdf.glsl")
+
+with open(output_filepath, "w", encoding="utf-8") as f:
+    f.write(generated_glsl)
+
+print(f"GLSL successfully exported to: {output_filepath}")
+print("generated_glsl")
